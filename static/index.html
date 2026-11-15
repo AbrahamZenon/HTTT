@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nhà Thuốc Long Châu - Phân Hệ Thanh Toán Hóa Đơn (TV2)</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+  <!-- Header Bar -->
+  <header class="navbar">
+    <div class="nav-brand">
+      <div class="logo-circle">
+        <i class="fa-solid fa-pills"></i>
+      </div>
+      <div class="brand-text">
+        <h1>NHÀ THUỐC FPT LONG CHÂU</h1>
+        <span class="sub-text">Hệ thống Quản lý Bán hàng & Tồn kho • Module TV2: UC02 - Thanh toán hóa đơn</span>
+      </div>
+    </div>
+    <div class="nav-user">
+      <div class="user-info">
+        <span class="user-name"><i class="fa-solid fa-user-shield"></i> Thu ngân: Nguyễn Văn An (NV01)</span>
+        <span class="branch-name"><i class="fa-solid fa-location-dot"></i> Chi nhánh Hà Nội 01</span>
+      </div>
+      <button class="btn btn-outline" id="btnResetDb" title="Phục hồi dữ liệu mẫu">
+        <i class="fa-solid fa-rotate-right"></i> Reset Data Mẫu
+      </button>
+    </div>
+  </header>
+
+  <!-- KPI / Stats Summary Bar -->
+  <section class="stats-bar">
+    <div class="stat-card stat-pending">
+      <div class="stat-icon"><i class="fa-solid fa-clock-rotate-left"></i></div>
+      <div class="stat-info">
+        <div class="stat-val" id="statPendingCount">0</div>
+        <div class="stat-label">Hóa đơn chờ thanh toán</div>
+      </div>
+    </div>
+    <div class="stat-card stat-paid">
+      <div class="stat-icon"><i class="fa-solid fa-circle-check"></i></div>
+      <div class="stat-info">
+        <div class="stat-val" id="statPaidCount">0</div>
+        <div class="stat-label">Đã thanh toán (Hoàn tất)</div>
+      </div>
+    </div>
+    <div class="stat-card stat-revenue">
+      <div class="stat-icon"><i class="fa-solid fa-coins"></i></div>
+      <div class="stat-info">
+        <div class="stat-val" id="statTotalRevenue">0 đ</div>
+        <div class="stat-label">Tổng doanh thu ca làm</div>
+      </div>
+    </div>
+    <div class="stat-card stat-cancelled">
+      <div class="stat-icon"><i class="fa-solid fa-ban"></i></div>
+      <div class="stat-info">
+        <div class="stat-val" id="statCancelledCount">0</div>
+        <div class="stat-label">Hóa đơn đã hủy</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Main Content Layout -->
+  <main class="main-container">
+    <!-- CỘT TRÁI: DANH SÁCH HÓA ĐƠN -->
+    <aside class="invoice-list-panel">
+      <div class="panel-header">
+        <h2><i class="fa-solid fa-file-invoice-dollar"></i> Danh Sách Hóa Đơn</h2>
+        <div class="filter-group">
+          <button class="filter-tab active" data-status="CHO_THANH_TOAN">Chờ TT</button>
+          <button class="filter-tab" data-status="DA_THANH_TOAN">Đã TT</button>
+          <button class="filter-tab" data-status="DA_HUY">Đã hủy</button>
+          <button class="filter-tab" data-status="">Tất cả</button>
+        </div>
+      </div>
+
+      <div class="search-box">
+        <i class="fa-solid fa-magnifying-glass"></i>
+        <input type="text" id="invoiceSearchInput" placeholder="Tìm theo Mã HĐ hoặc ghi chú...">
+      </div>
+
+      <div class="invoice-cards-container" id="invoiceCardsList">
+        <!-- Render động bằng JS -->
+        <div class="loading-state">
+          <i class="fa-solid fa-spinner fa-spin"></i> Đang tải danh sách...
+        </div>
+      </div>
+    </aside>
+
+    <!-- CỘT PHẢI: CHI TIẾT & XỬ LÝ THANH TOÁN -->
+    <section class="invoice-detail-panel" id="detailPanel">
+      <!-- Mặc định khi chưa chọn hóa đơn -->
+      <div class="empty-state" id="emptyStateView">
+        <i class="fa-solid fa-hand-pointer"></i>
+        <h3>Chọn một hóa đơn từ danh sách bên trái để tiến hành thanh toán</h3>
+        <p>Hệ thống tự động đồng bộ hóa đơn do TV1 lập và cập nhật trừ kho theo lô sau khi thanh toán.</p>
+      </div>
+
+      <!-- Khung hiển thị khi đã chọn hóa đơn -->
+      <div class="detail-content" id="detailContentView" style="display: none;">
+        <!-- Top detail bar -->
+        <div class="detail-header">
+          <div class="invoice-title">
+            <h2 id="viewMaHD">HD261115-001</h2>
+            <span class="badge" id="viewTrangThaiBadge">CHO_THANH_TOAN</span>
+          </div>
+          <div class="invoice-meta">
+            <span><i class="fa-regular fa-clock"></i> Ngày lập: <strong id="viewNgayLap">--</strong></span>
+            <span><i class="fa-solid fa-user-pen"></i> NV lập: <strong id="viewNhanVien">--</strong></span>
+          </div>
+        </div>
+
+        <!-- Bảng chi tiết thuốc trong hóa đơn -->
+        <div class="table-container">
+          <table class="items-table">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Tên Thuốc / Quy Cách</th>
+                <th>Mã Lô</th>
+                <th>Hạn Dùng</th>
+                <th class="text-right">Đơn Giá</th>
+                <th class="text-center">Số Lượng</th>
+                <th class="text-right">Thành Tiền</th>
+              </tr>
+            </thead>
+            <tbody id="itemsTableBody">
+              <!-- Render danh sách thuốc -->
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Khung tổng kết tiền -->
+        <div class="total-summary-card">
+          <div class="total-row">
+            <span>Tổng tiền hàng:</span>
+            <span class="price-val" id="viewTongTienHang">0 đ</span>
+          </div>
+          <div class="total-row highlight">
+            <span>TỔNG THANH TOÁN:</span>
+            <span class="price-val main-price" id="viewTongThanhToan">0 đ</span>
+          </div>
+        </div>
+
+        <!-- GIAO DIỆN XỬ LÝ THANH TOÁN (Chỉ hiện khi trạng thái là CHO_THANH_TOAN) -->
+        <div class="payment-action-box" id="paymentActionBox">
+          <h3 class="section-title"><i class="fa-solid fa-credit-card"></i> Chọn Phương Thức Thanh Toán</h3>
+          
+          <div class="payment-tabs">
+            <button class="pay-tab active" data-method="TIEN_MAT">
+              <i class="fa-solid fa-money-bill-wave"></i> Tiền mặt
+            </button>
+            <button class="pay-tab" data-method="CHUYEN_KHOAN">
+              <i class="fa-solid fa-qrcode"></i> Chuyển khoản QR
+            </button>
+            <button class="pay-tab" data-method="THE">
+              <i class="fa-solid fa-credit-card"></i> Thẻ POS
+            </button>
+          </div>
+
+          <!-- Nội dung Tab 1: Tiền mặt -->
+          <div class="tab-pane active" id="paneTienMat">
+            <div class="form-group">
+              <label for="inputTienKhachDua">Số tiền khách đưa (VNĐ):</label>
+              <div class="input-with-icon">
+                <i class="fa-solid fa-dong-sign"></i>
+                <input type="number" id="inputTienKhachDua" placeholder="Nhập số tiền..." min="0" step="1000">
+              </div>
+            </div>
+
+            <!-- Nút gợi ý mệnh giá tiền nhanh -->
+            <div class="quick-cash-row">
+              <span class="quick-label">Mệnh giá nhanh:</span>
+              <button class="btn-chip" data-val="exact">Vừa đủ</button>
+              <button class="btn-chip" data-val="100000">100.000đ</button>
+              <button class="btn-chip" data-val="200000">200.000đ</button>
+              <button class="btn-chip" data-val="500000">500.000đ</button>
+              <button class="btn-chip" data-val="1000000">1.000.000đ</button>
+            </div>
+
+            <!-- Kết quả tiền thừa -->
+            <div class="change-display-box" id="changeDisplayBox">
+              <span class="change-label">Tiền thừa trả khách:</span>
+              <span class="change-val" id="viewTienThua">0 đ</span>
+            </div>
+          </div>
+
+          <!-- Nội dung Tab 2: Chuyển khoản QR -->
+          <div class="tab-pane" id="paneChuyenKhoan" style="display: none;">
+            <div class="qr-payment-wrapper">
+              <div class="qr-box">
+                <!-- SVG Giả lập VietQR đẹp mắt -->
+                <div class="qr-frame" id="vietQrFrame">
+                  <div class="qr-mockup">
+                    <i class="fa-solid fa-qrcode fa-6x"></i>
+                  </div>
+                  <div class="qr-brand-badge">VietQR • Napas247</div>
+                </div>
+              </div>
+              <div class="qr-details">
+                <p><strong>Ngân hàng:</strong> MB Bank (Quân Đội)</p>
+                <p><strong>Số tài khoản:</strong> <code>0988889999</code></p>
+                <p><strong>Chủ tài khoản:</strong> CTY CP DUOC PHAM FPT LONG CHAU</p>
+                <p><strong>Số tiền:</strong> <span class="highlight-text" id="qrSoTien">0 đ</span></p>
+                <p><strong>Nội dung CK:</strong> <code id="qrNoiDung">LONGCHAU HD...</code></p>
+                <div class="alert alert-info">
+                  <i class="fa-solid fa-info-circle"></i> Yêu cầu khách quét mã QR để chuyển khoản. Khi có thông báo tiền về tài khoản, bấm xác nhận bên dưới.
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Nội dung Tab 3: Thẻ POS -->
+          <div class="tab-pane" id="paneThe" style="display: none;">
+            <div class="pos-payment-wrapper">
+              <div class="pos-icon"><i class="fa-solid fa-credit-card fa-3x"></i></div>
+              <div class="pos-info">
+                <h4>Thanh toán qua POS thẻ ATM / Visa / Mastercard</h4>
+                <p>Số tiền thanh toán: <strong id="posSoTien">0 đ</strong></p>
+                <div class="form-group">
+                  <label for="inputPosRef">Mã chuẩn chi POS (tùy chọn):</label>
+                  <input type="text" id="inputPosRef" placeholder="Tự sinh hoặc nhập mã tham chiếu..." value="POS-READY">
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Thanh nút thao tác chính -->
+          <div class="action-buttons-bar">
+            <button class="btn btn-danger btn-outline" id="btnHuyHoaDon">
+              <i class="fa-solid fa-trash-can"></i> Hủy Hóa Đơn
+            </button>
+            <button class="btn btn-success btn-lg" id="btnXacNhanThanhToan">
+              <i class="fa-solid fa-circle-check"></i> Xác Nhận Thanh Toán (Hoàn tất)
+            </button>
+          </div>
+        </div>
+
+        <!-- Khung thông tin thanh toán đã hoàn tất (Hiện khi hóa đơn đã trả tiền) -->
+        <div class="paid-result-box" id="paidResultBox" style="display: none;">
+          <div class="paid-badge-large">
+            <i class="fa-solid fa-check-double"></i> HÓA ĐƠN ĐÃ THANH TOÁN HOÀN TẤT
+          </div>
+          <div class="paid-info-grid">
+            <div><strong>Mã giao dịch:</strong> <span id="viewMaTT">--</span></div>
+            <div><strong>Phương thức:</strong> <span id="viewPhuongThucTT">--</span></div>
+            <div><strong>Thời gian TT:</strong> <span id="viewThoiGianTT">--</span></div>
+            <div><strong>Tồn kho lô thuốc:</strong> <span class="badge-success-small">Đã tự động trừ kho (BR10)</span></div>
+          </div>
+          <div class="paid-actions">
+            <button class="btn btn-primary btn-lg" id="btnInHoaDon">
+              <i class="fa-solid fa-print"></i> In Hóa Đơn / Biên Lai Cho Khách
+            </button>
+          </div>
+        </div>
+
+        <!-- Khung thông báo khi hóa đơn đã bị hủy -->
+        <div class="cancelled-result-box" id="cancelledResultBox" style="display: none;">
+          <div class="cancelled-badge-large">
+            <i class="fa-solid fa-ban"></i> HÓA ĐƠN NÀY ĐÃ ĐƯỢC HỦY
+          </div>
+          <p id="viewCancelledReason" class="cancelled-note">Lý do hủy: ...</p>
+        </div>
+
+      </div>
+    </section>
+  </main>
+
+  <!-- MODAL: HỦY HÓA ĐƠN -->
+  <div class="modal-overlay" id="modalHuyHoaDon">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3><i class="fa-solid fa-triangle-exclamation text-warning"></i> Xác nhận hủy hóa đơn</h3>
+        <button class="btn-close" id="btnCloseHuyModal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p>Bạn có chắc chắn muốn hủy hóa đơn <strong id="modalHuyMaHD">HD...</strong> không?</p>
+        <div class="form-group">
+          <label for="selectLyDoHuy">Lý do hủy:</label>
+          <select id="selectLyDoHuy" class="form-control">
+            <option value="Khách hàng đổi ý không mua">Khách hàng đổi ý không mua</option>
+            <option value="Khách không đủ tiền mặt / lỗi thanh toán">Khách không đủ tiền mặt / lỗi thanh toán</option>
+            <option value="Nhân viên nhập sai thông tin hóa đơn">Nhân viên nhập sai thông tin hóa đơn</option>
+            <option value="Khác">Khác</option>
+          </select>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" id="btnCancelHuy">Bỏ qua</button>
+        <button class="btn btn-danger" id="btnConfirmHuy">Đồng ý Hủy Hóa Đơn</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: IN BIÊN LAI / HÓA ĐƠN BÁN LẺ CHUẨN LONG CHÂU -->
+  <div class="modal-overlay" id="modalInHoaDon">
+    <div class="modal-card receipt-card">
+      <div class="modal-header no-print">
+        <h3><i class="fa-solid fa-receipt"></i> Xem Trước Biên Lai Thanh Toán</h3>
+        <button class="btn-close" id="btnCloseReceiptModal">&times;</button>
+      </div>
+      <div class="modal-body receipt-body" id="receiptPrintArea">
+        <div class="receipt-header">
+          <div class="receipt-logo">FPT LONG CHÂU</div>
+          <div class="receipt-sub">HỆ THỐNG NHÀ THUỐC LONG CHÂU</div>
+          <div class="receipt-address">Chi nhánh: 123 Cầu Giấy, Hà Nội • ĐT: 1800 6928</div>
+          <h2 class="receipt-title">HÓA ĐƠN BÁN LẺ & BIÊN LAI</h2>
+          <div class="receipt-divider">--------------------------------------------------</div>
+          <div class="receipt-meta-grid">
+            <div>Số HĐ: <strong id="recMaHD">--</strong></div>
+            <div>Mã GD: <strong id="recMaTT">--</strong></div>
+            <div>Ngày: <span id="recNgayLap">--</span></div>
+            <div>Thu ngân: <span id="recThuNgan">NV01</span></div>
+          </div>
+          <div class="receipt-divider">--------------------------------------------------</div>
+        </div>
+
+        <table class="receipt-table">
+          <thead>
+            <tr>
+              <th align="left">Tên thuốc (Lô - HSD)</th>
+              <th align="center">SL</th>
+              <th align="right">Đơn giá</th>
+              <th align="right">T.Tiền</th>
+            </tr>
+          </thead>
+          <tbody id="recItemsBody">
+            <!-- Render items -->
+          </tbody>
+        </table>
+
+        <div class="receipt-divider">--------------------------------------------------</div>
+
+        <div class="receipt-totals">
+          <div class="rec-row"><span>Tổng tiền hàng:</span><strong id="recTongTien">0 đ</strong></div>
+          <div class="rec-row"><span>Phương thức:</span><span id="recPhuongThuc">Tiền mặt</span></div>
+          <div class="rec-row" id="recRowTienKhachDua"><span>Tiền khách đưa:</span><span id="recTienKhach">0 đ</span></div>
+          <div class="rec-row" id="recRowTienThua"><span>Tiền thối lại:</span><strong id="recTienThua">0 đ</strong></div>
+        </div>
+
+        <div class="receipt-divider">--------------------------------------------------</div>
+
+        <div class="receipt-footer">
+          <p>Cảm ơn Quý khách đã tin tưởng Nhà thuốc Long Châu!</p>
+          <p>Chúc Quý khách luôn khỏe mạnh và an vui!</p>
+          <p class="barcode">* <span id="recBarcode">HD261115-001</span> *</p>
+        </div>
+      </div>
+      <div class="modal-footer no-print">
+        <button class="btn btn-secondary" id="btnDongReceipt">Đóng</button>
+        <button class="btn btn-primary" onclick="window.print()">
+          <i class="fa-solid fa-print"></i> In Hóa Đơn Ngay
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Notification Toast -->
+  <div id="toastNotification" class="toast"></div>
+
+  <script src="app.js"></script>
+</body>
+</html>
+
