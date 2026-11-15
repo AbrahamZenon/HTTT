@@ -1,73 +1,72 @@
-# BÁO CÁO PHÂN TÍCH VÀ THIẾT KẾ PHÂN HỆ THÀNH VIÊN 2 (TV2)
-## Đề tài: Hệ Thống Quản Lý Bán Hàng Và Tồn Kho Nhà Thuốc Long Châu
-**Học phần:** Phân tích & Thiết kế Hệ thống Thông tin (Chuẩn mẫu báo cáo PTIT)  
-**Thành viên phụ trách:** Thành viên 2 (TV2)  
-**Use Case trọng tâm:** `UC02 – Thanh toán hóa đơn`  
-**Nhiệm vụ bổ sung:** `Quản lý các trạng thái hóa đơn và thanh toán`  
-**Ngôn ngữ triển khai:** `Java (JDK 8 – JDK 25+)` / `Java Swing UI`
+# BAO CAO PHAN TICH VA THIET KE PHAN HE THANH VIEN 2 (TV2)
+## De tai: He Thong Quan Ly Ban Hang Va Ton Kho Nha Thuoc Long Chau
+**Hoc phan:** Phan tich & Thiet ke He thong Thong tin (Chuan mau bao cao PTIT)  
+**Thanh vien phu trach:** Thanh vien 2 (TV2)  
+**Use Case trong tam:** `UC02 - Thanh toan hoa don`  
+**Nhiem vu bo sung:** `Quan ly cac trang thai hoa don va thanh toan`  
+**Ngon ngu trien khai:** `Java (JDK 8 - JDK 25+)` / `Java Swing UI`
 
 ---
 
-## 1. Đặc tả Use Case chi tiết (UC02 - Thanh toán hóa đơn)
+## 1. Dac ta Use Case chi tiet (UC02 - Thanh toan hoa don)
 
-### 1.1. Bảng đặc tả Use Case
-- **Mã Use Case:** UC02
-- **Tên Use Case:** Thanh toán hóa đơn
-- **Tác nhân chính:** Nhân viên bán hàng (Thu ngân)
-- **Tác nhân phụ:** Khách hàng
-- **Tiền điều kiện:** Hóa đơn đã được lập (bởi TV1) ở trạng thái `CHO_THANH_TOAN`. Khách hàng sẵn sàng thanh toán.
-- **Hậu điều kiện:**
-  - Hóa đơn chuyển sang trạng thái `DA_THANH_TOAN` (BR04).
-  - Bản ghi `ThanhToan` được tạo liên kết với hóa đơn (BR05).
-  - Tồn kho của các `LoThuoc` trong hóa đơn bị trừ chính xác (BR10).
-  - Biên lai/hóa đơn bán lẻ được in ra cho khách.
-
----
-
-## 2. Quản lý trạng thái (State Machine)
-- `HoaDon`: `CHO_THANH_TOAN` -> `DA_THANH_TOAN` (khi thanh toán thành công) hoặc `DA_HUY` (khi khách hủy mua).
-- `ThanhToan`: `DANG_XU_LY` -> `THANH_CONG` hoặc `THAT_BAI`.
-- Không cho phép thanh toán lại hóa đơn đã hoàn tất hoặc đã hủy. Không cho phép hủy hóa đơn đã thanh toán.
+### 1.1. Bang dac ta Use Case
+- **Ma Use Case:** UC02
+- **Ten Use Case:** Thanh toan hoa don
+- **Tac nhan chinh:** Nhan vien ban hang (Thu ngan)
+- **Tac nhan phu:** Khach hang
+- **Tien dieu kien:** Hoa don da duoc lap (boi TV1) o trang thai `CHO_THANH_TOAN`. Khach hang san sang thanh toan.
+- **Hau dieu kien:**
+  - Hoa don chuyen sang trang thai `DA_THANH_TOAN` (BR04).
+  - Ban ghi `ThanhToan` duoc tao lien ket voi hoa don (BR05).
+  - Ton kho cua cac `LoThuoc` trong hoa don bi tru chinh xac (BR10).
+  - Bien lai/hoa don ban le duoc in ra cho khach.
 
 ---
 
-## 3. Cấu trúc mã nguồn Java
+## 2. Quan ly trang thai (State Machine)
+- `HoaDon`: `CHO_THANH_TOAN` -> `DA_THANH_TOAN` (khi thanh toan thanh cong) hoac `DA_HUY` (khi khach huy mua).
+- `ThanhToan`: `DANG_XU_LY` -> `THANH_CONG` hoac `THAT_BAI`.
+- Khong cho phep thanh toan lai hoa don da hoan tat hoac da huy. Khong cho phep huy hoa don da thanh toan.
+
+---
+
+## 3. Cau truc ma nguon Java
 
 ```
 c:\Users\kn200\HTTT\
-├── run.bat                     # File kích hoạt 1-click chạy giao diện Swing
-├── test.bat                    # File chạy 6 bài kiểm thử tự động BR04, BR05, BR10
-├── src/main/java/com/longchau/
-│   ├── model/                  # Tầng Entity & Enums
-│   │   ├── TrangThaiHoaDon.java
-│   │   ├── TrangThaiThanhToan.java
-│   │   ├── PhuongThucThanhToan.java
-│   │   ├── NhanVien.java
-│   │   ├── Thuoc.java
-│   │   ├── LoThuoc.java
-│   │   ├── ChiTietHoaDon.java
-│   │   ├── ThanhToan.java
-│   │   └── HoaDon.java
-│   ├── dao/                    # Tầng Truy xuất dữ liệu (Data Access Object)
-│   │   ├── Database.java       # Mock DB quan hệ với Seed Data thực tế Long Châu
-│   │   ├── HoaDonDAO.java      # Cập nhật & tra cứu Hóa đơn
-│   │   ├── ThanhToanDAO.java   # Lưu giao dịch thanh toán
-│   │   └── LoThuocDAO.java     # Kiểm tra & trừ tồn kho theo lô (BR10)
-│   ├── service/                # Tầng Xử lý nghiệp vụ (Business Logic)
-│   │   ├── PaymentException.java
-│   │   ├── PaymentRequest.java
-│   │   ├── PaymentResult.java
-│   │   └── PaymentService.java # Kiểm tra BR04, BR05, BR10 & State Machine
-│   ├── view/                   # Tầng Giao diện (Java Swing GUI)
-│   │   ├── PaymentManagementFrame.java # Màn hình quầy thu ngân Long Châu
-│   │   └── ReceiptDialog.java          # Modal in biên lai / hóa đơn bán lẻ
-│   ├── Main.java               # Khởi chạy ứng dụng GUI
-│   └── TestPaymentRunner.java  # Kiểm thử tự động 6 ca kiểm thử
+|-- run.bat                     # File kich hoat 1-click chay giao dien Swing
+|-- test.bat                    # File chay 6 bai kiem thu tu dong BR04, BR05, BR10
+|-- src/main/java/com/longchau/
+    |-- model/                  # Tang Entity & Enums
+    |   |-- TrangThaiHoaDon.java
+    |   |-- TrangThaiThanhToan.java
+    |   |-- PhuongThucThanhToan.java
+    |   |-- NhanVien.java
+    |   |-- Thuoc.java
+    |   |-- LoThuoc.java
+    |   |-- ChiTietHoaDon.java
+    |   |-- ThanhToan.java
+    |   |-- HoaDon.java
+    |-- dao/                    # Tang Truy xuat du lieu (Data Access Object)
+    |   |-- Database.java       # Mock DB quan he voi Seed Data thuc te Long Chau
+    |   |-- HoaDonDAO.java      # Cap nhat & tra cuu Hoa don
+    |   |-- ThanhToanDAO.java   # Luu giao dich thanh toan
+    |   |-- LoThuocDAO.java     # Kiem tra & tru ton kho theo lo (BR10)
+    |-- service/                # Tang Xu ly nghiep vu (Business Logic)
+    |   |-- PaymentException.java
+    |   |-- PaymentRequest.java
+    |   |-- PaymentResult.java
+    |   |-- PaymentService.java # Kiem tra BR04, BR05, BR10 & State Machine
+    |-- view/                   # Tang Giao dien (Java Swing GUI)
+    |   |-- PaymentManagementFrame.java # Man hinh quay thu ngan Long Chau
+    |   |-- ReceiptDialog.java          # Modal in bien lai / hoa don ban le
+    |-- Main.java               # Khoi chay ung dung GUI
+    |-- TestPaymentRunner.java  # Kiem thu tu dong 6 ca kiem thu
 ```
 
 ---
 
-## 4. Hướng dẫn chạy chương trình
-1. Nhấp đúp chuột vào file `run.bat` để chạy giao diện Java Swing.
-2. Nhấp đúp chuột vào file `test.bat` để chạy bộ kiểm thử tự động 6/6 test cases.
-
+## 4. Huong dan chay chuong trinh
+1. Nhap dup chuot vao file `run.bat` de chay giao dien Java Swing.
+2. Nhap dup chuot vao file `test.bat` de chay bo kiem thu tu dong 6/6 test cases.

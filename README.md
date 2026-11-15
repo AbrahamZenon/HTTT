@@ -1,165 +1,165 @@
-# HỆ THỐNG QUẢN LÝ BÁN HÀNG VÀ TỒN KHO NHÀ THUỐC LONG CHÂU
-> **Học phần:** Phân tích & Thiết kế Hệ thống Thông tin (Chuẩn mẫu đồ án PTIT)  
-> **Quy mô:** Nhóm 4 thành viên • Ngôn ngữ triển khai: **Java (100% Thuần túy - Zero Dependency)**  
-> **Phạm vi:** Mô phỏng phục vụ học tập tại một chi nhánh nhà thuốc Long Châu
+# HE THONG QUAN LY BAN HANG VA TON KHO NHA THUOC LONG CHAU
+> **Hoc phan:** Phan tich & Thiet ke He thong Thong tin (Chuan mau do an PTIT)  
+> **Quy mo:** Nhom 4 thanh vien - Ngon ngu trien khai: **Java (100% Thuan tuy - Zero Dependency)**  
+> **Pham vi:** Mo phong phuc vu hoc tap tai mot chi nhanh nha thuoc Long Chau
 
 ---
 
-## MỤC LỤC
-1. [Tổng Quan Đề Tài](#1-tổng-quan-đề-tài)
-2. [Các Tác Nhân Hệ Thống (Actors)](#2-các-tác-nhân-hệ-thống)
-3. [Các Quy Trình Nghiệp Vụ Chính](#3-các-quy-trình-nghiệp-vụ-chính)
-4. [Danh Sách Use Case & Phân Công 4 Thành Viên](#4-danh-sách-use-case--phân-công-4-thành-viên)
-5. [Quy Tắc Nghiệp Vụ Thống Nhất (BR01 – BR12)](#5-quy-tắc-nghiệp-vụ-thống-nhất)
-6. [Mô Hình Dữ Liệu Sơ Bộ & Quan Hệ Thực Thể](#6-mô-hình-dữ-liệu-sơ-bộ--quan-hệ-thực-thể)
-7. [Mô Hình Thuật Toán & Luồng Xử Lý Nghiệp Vụ](#7-mô-hình-thuật-toán--luồng-xử-lý-nghiệp-vụ)
-8. [Kiến Trúc Kỹ Thuật & Cấu Trúc Mã Nguồn Java](#8-kiến-trúc-kỹ-thuật--cấu-trúc-mã-nguồn-java)
-9. [Hướng Dẫn Biên Dịch & Chạy Chương Trình](#9-hướng-dẫn-biên-dịch--chạy-chương-trình)
+## MUC LUC
+1. [Tong Quan De Tai](#1-tong-quan-de-tai)
+2. [Cac Tac Nhan He Thong (Actors)](#2-cac-tac-nhan-he-thong)
+3. [Cac Quy Trinh Nghiep Vu Chinh](#3-cac-quy-trinh-nghiep-vu-chinh)
+4. [Danh Sach Use Case & Phan Cong 4 Thanh Vien](#4-danh-sach-use-case--phan-cong-4-thanh-vien)
+5. [Quy Tac Nghiep Vu Thong Nhat (BR01 - BR12)](#5-quy-tac-nghiep-vu-thong-nhat)
+6. [Mo Hinh Du Lieu So Bo & Quan He Thuc The](#6-mo-hinh-du-lieu-so-bo--quan-he-thuc-the)
+7. [Mo Hinh Thuat Toan & Luong Xu Ly Nghiep Vu](#7-mo-hinh-thuat-toan--luong-xu-ly-nghiep-vu)
+8. [Kien Truc Ky Thuat & Cau Truc Ma Nguon Java](#8-kien-truc-ky-thuat--cau-truc-ma-nguon-java)
+9. [Huong Dan Bien Dich & Chay Chuong Trinh](#9-huong-dan-bien-dich--chay-chuong-trinh)
 
 ---
 
-## 1. Tổng Quan Đề Tài
+## 1. Tong Quan De Tai
 
-### 1.1. Bối cảnh
-Nhà thuốc cần quản lý đồng thời hoạt động bán lẻ thuốc cho khách hàng và việc tiếp nhận thuốc từ nhà cung cấp. Hai hoạt động này có liên hệ trực tiếp với số lượng tồn kho của từng loại thuốc tại nhà thuốc.  
-Nếu việc ghi nhận hóa đơn bán hàng, thanh toán và nhập hàng không được quản lý thống nhất, dữ liệu tồn kho sẽ bị sai lệch. Đặc biệt trong ngành dược phẩm, việc không theo dõi chặt chẽ thông tin **lô thuốc** và **hạn sử dụng** có thể dẫn đến việc xuất bán thuốc hết hạn, gây rủi ro nghiêm trọng đến sức khỏe người tiêu dùng.  
-Do đó, nhóm đề xuất xây dựng hệ thống hỗ trợ quản lý bán hàng, nhập hàng và kiểm soát thông tin tồn kho theo lô.
+### 1.1. Boi canh
+Nha thuoc can quan ly dong thoi hoat dong ban le thuoc cho khach hang va viec tiep nhan thuoc tu nha cung cap. Hai hoat dong nay co lien he truc tiep voi so luong ton kho cua tung loai thuoc tai nha thuoc.  
+Neu viec ghi nhan hoa don ban hang, thanh toan va nhap hang khong duoc quan ly thong nhat, du lieu ton kho se bi sai lech. Dac biet trong nganh duoc pham, viec khong theo doi chat che thong tin **lo thuoc** va **han su dung** co the dan den viec xuat ban thuoc het han, gay rui ro nghiem trong den suc khoe nguoi tieu dung.  
+Do do, nhom de xuat xay dung he thong ho tro quan ly ban hang, nhap hang va kiem soat thong tin ton kho theo lo.
 
-*(Lưu ý: Đây là mô hình nghiệp vụ giả định phục vụ mục đích học tập đề án môn học, không khẳng định là quy trình vận hành nội bộ chính thức của FPT Long Châu).*
+*(Luu y: Day la mo hinh nghiep vu gia dinh phuc vu muc dich hoc tap de an mon hoc, khong khang dinh la quy trinh van hanh noi bo chinh thuc cua FPT Long Chau).*
 
-### 1.2. Mục tiêu hệ thống
-- Quản lý danh mục thuốc và thông tin thuốc (đơn vị tính, giá bán, trạng thái kinh doanh).
-- Hỗ trợ nhân viên lập hóa đơn bán hàng nhanh chóng, chính xác.
-- Ghi nhận và quản lý thanh toán đa phương thức (Tiền mặt, Chuyển khoản QR, Thẻ POS).
-- Hỗ trợ tiếp nhận thuốc từ nhà cung cấp và lập phiếu nhập hàng.
-- Kiểm soát tồn kho chặt chẽ theo từng **mã lô** và **hạn sử dụng**.
-- Cung cấp các báo cáo cơ bản về doanh thu, nhập hàng và cảnh báo hạn dùng.
+### 1.2. Muc tieu he thong
+- Quan ly danh muc thuoc va thong tin thuoc (don vi tinh, gia ban, trang thai kinh doanh).
+- Ho tro nhan vien lap hoa don ban hang nhanh chong, chinh xac.
+- Ghi nhan va quan ly thanh toan da phuong thuc (Tien mat, Chuyen khoan QR, The POS).
+- Ho tro tiep nhan thuoc tu nha cung cap va lap phieu nhap hang.
+- Kiem soat ton kho chat che theo tung **ma lo** va **han su dung**.
+- Cung cap cac bao cao co ban ve doanh thu, nhap hang va canh bao han dung.
 
-### 1.3. Phạm vi hệ thống
-* **Phạm vi thực hiện:**
-  - Áp dụng tại một chi nhánh nhà thuốc mô phỏng.
-  - Quản lý danh mục thuốc, bán hàng, thanh toán, nhập hàng.
-  - Tồn kho tự động tăng khi xác nhận nhập và tự động giảm khi hoàn tất thanh toán.
-  - Theo dõi hạn sử dụng theo lô và cảnh báo lô sắp hết hạn.
-  - Báo cáo thống kê cơ bản trong ca.
-* **Ngoài phạm vi (Không triển khai trong đồ án):**
-  - Quản lý chuỗi liên chi nhánh hoặc điều phối vận chuyển giữa các kho.
-  - Kế toán tổng hợp, bảng lương nhân sự, tài chính chuyên sâu.
-  - Đơn thuốc điện tử quốc gia hoặc cổng xác thực bảo hiểm y tế.
-  - Mua hàng đấu thầu quy mô lớn, tối ưu hóa chuỗi cung ứng nâng cao.
+### 1.3. Pham vi he thong
+- **Pham vi thuc hien:**
+  - Ap dung tai mot chi nhanh nha thuoc mo phong.
+  - Quan ly danh muc thuoc, ban hang, thanh toan, nhap hang.
+  - Ton kho tu dong tang khi xac nhan nhap va tu dong giam khi hoan tat thanh toan.
+  - Theo doi han su dung theo lo va canh bao lo sap het han.
+  - Bao cao thong ke co ban trong ca.
+- **Ngoai pham vi (Khong trien khai trong do an):**
+  - Quan ly chuoi lien chi nhanh hoac dieu phoi van chuyen giua cac kho.
+  - Ke toan tong hop, bang luong nhan su, tai chinh chuyen sau.
+  - Don thuoc dien tu quoc gia hoac cong xac thuc bao hiem y te.
+  - Mua hang dau thau quy mo lon, toi uu hoa chuoi cung ung nang cao.
 
 ---
 
-## 2. Các Tác Nhân Hệ Thống
+## 2. Cac Tac Nhan He Thong
 
-| Tác nhân | Phân loại | Vai trò và Quyền hạn |
+| Tac nhan | Phan loai | Vai tro va Quyen han |
 | :--- | :--- | :--- |
-| **Nhân viên bán hàng** | Tác nhân trong | Đăng nhập hệ thống, tìm kiếm thuốc, lập hóa đơn (UC01), thực hiện thu tiền và hoàn tất thanh toán (UC02), in biên lai cho khách. |
-| **Nhân viên nhập hàng**| Tác nhân trong | Đăng nhập hệ thống, tiếp nhận thuốc giao đến, kiểm tra tình trạng hàng, lập phiếu nhập hàng kèm thông tin lô và hạn sử dụng (UC03). |
-| **Quản lý nhà thuốc** | Tác nhân trong | Quản lý danh mục thuốc (UC05), xem báo cáo doanh thu (UC07), xem báo cáo nhập - xuất - tồn và cảnh báo hạn sử dụng (UC08). |
-| **Khách hàng** | Tác nhân ngoài | Yêu cầu mua thuốc, kiểm tra đơn hàng, thực hiện thanh toán (tiền mặt/QR/thẻ) và nhận thuốc kèm biên lai (Không cần tài khoản). |
-| **Nhà cung cấp** | Tác nhân ngoài | Giao thuốc và cung cấp chứng từ giao hàng kèm thông tin lô sản xuất và hạn sử dụng (Không cần tài khoản). |
+| **Nhan vien ban hang** | Tac nhan trong | Dang nhap he thong, tim kiem thuoc, lap hoa don (UC01), thuc hien thu tien va hoan tat thanh toan (UC02), in bien lai cho khach. |
+| **Nhan vien nhap hang**| Tac nhan trong | Dang nhap he thong, tiep nhan thuoc giao den, kiem tra tinh trang hang, lap phieu nhap hang kem thong tin lo va han su dung (UC03). |
+| **Quan ly nha thuoc** | Tac nhan trong | Quan ly danh muc thuoc (UC05), xem bao cao doanh thu (UC07), xem bao cao nhap - xuat - ton va canh bao han su dung (UC08). |
+| **Khach hang** | Tac nhan ngoai | Yeu cau mua thuoc, kiem tra don hang, thuc hien thanh toan (tien mat/QR/the) va nhan thuoc kem bien lai (Khong can tai khoan). |
+| **Nha cung cap** | Tac nhan ngoai | Giao thuoc va cung cap chung tu giao hang kem thong tin lo san xuat va han su dung (Khong can tai khoan). |
 
 ---
 
-## 3. Các Quy Trình Nghiệp Vụ Chính
+## 3. Cac Quy Trinh Nghiep Vu Chinh
 
 ```mermaid
 flowchart LR
-    subgraph BanHang["1. Nghiệp Vụ Bán Hàng & Thanh Toán"]
+    subgraph BanHang["1. Nghiep Vu Ban Hang & Thanh Toan"]
         direction TB
-        A1["Khách yêu cầu mua"] --> A2["NV tìm & chọn thuốc"]
-        A2 --> A3["Lập hóa đơn (TV1)"]
-        A3 --> A4["Thu tiền & Thanh toán (TV2)"]
-        A4 --> A5["Trừ tồn kho theo lô & In biên lai"]
+        A1["Khach yeu cau mua"] --> A2["NV tim & chon thuoc"]
+        A2 --> A3["Lap hoa don (TV1)"]
+        A3 --> A4["Thu tien & Thanh toan (TV2)"]
+        A4 --> A5["Tru ton kho theo lo & In bien lai"]
     end
 
-    subgraph NhapHang["2. Nghiệp Vụ Nhập Hàng"]
+    subgraph NhapHang["2. Nghiep Vu Nhap Hang"]
         direction TB
-        B1["NCC giao thuốc"] --> B2["NV kiểm tra hàng"]
-        B2 --> B3["Ghi nhận Lô & HSD"]
-        B3 --> B4["Lập phiếu nhập (TV3)"]
-        B4 --> B5["Tăng tồn kho theo lô"]
+        B1["NCC giao thuoc"] --> B2["NV kiem tra hang"]
+        B2 --> B3["Ghi nhan Lo & HSD"]
+        B3 --> B4["Lap phieu nhap (TV3)"]
+        B4 --> B5["Tang ton kho theo lo"]
     end
 
-    subgraph QuanLyLo["3. Quản Lý Thông Tin & Lô Thuốc"]
+    subgraph QuanLyLo["3. Quan Ly Thong Tin & Lo Thuoc"]
         direction TB
-        C1["Quản lý danh mục thuốc"]
-        C2["Kiểm soát HSD theo lô (TV4)"]
-        C3["Phát hiện lô sắp hết hạn"]
+        C1["Quan ly danh muc thuoc"]
+        C2["Kiem soat HSD theo lo (TV4)"]
+        C3["Phat hien lo sap het han"]
     end
 ```
 
-### 3.1. Nghiệp vụ Bán hàng và Thanh toán
-1. Khách hàng yêu cầu mua thuốc tại quầy.
-2. Nhân viên bán hàng tìm kiếm thuốc trong danh mục.
-3. Nhân viên chọn thuốc, chọn lô phù hợp và nhập số lượng bán.
-4. Hệ thống kiểm tra số lượng tồn khả dụng của lô và tính tổng tiền hóa đơn.
-5. Nhân viên xác nhận lập hóa đơn (`CHO_THANH_TOAN` - Trách nhiệm của TV1).
-6. Khách hàng chọn phương thức trả tiền (Tiền mặt, Chuyển khoản VietQR, Thẻ POS).
-7. Hệ thống ghi nhận kết quả thanh toán, đổi trạng thái hóa đơn sang `DA_THANH_TOAN` (Trách nhiệm của TV2).
-8. Hệ thống trừ trực tiếp tồn kho của từng lô thuốc tương ứng (BR10).
-9. Nhân viên in biên lai, giao thuốc và biên lai cho khách hàng.
+### 3.1. Nghiep vu Ban hang va Thanh toan
+1. Khach hang yeu cau mua thuoc tai quay.
+2. Nhan vien ban hang tim kiem thuoc trong danh muc.
+3. Nhan vien chon thuoc, chon lo phu hop va nhap so luong ban.
+4. He thong kiem tra so luong ton kha dung cua lo va tinh tong tien hoa don.
+5. Nhan vien xac nhan lap hoa don (`CHO_THANH_TOAN` - Trach nhiem cua TV1).
+6. Khach hang chon phuong thuc tra tien (Tien mat, Chuyen khoan VietQR, The POS).
+7. He thong ghi nhan ket qua thanh toan, doi trang thai hoa don sang `DA_THANH_TOAN` (Trach nhiem cua TV2).
+8. He thong tru truc tiep ton kho cua tung lo thuoc tuong ung (BR10).
+9. Nhan vien in bien lai, giao thuoc va bien lai cho khach hang.
 
-### 3.2. Nghiệp vụ Tiếp nhận và Nhập hàng
-1. Nhà cung cấp giao thuốc đến nhà thuốc kèm hóa đơn/phiếu giao hàng.
-2. Nhân viên nhập hàng kiểm tra thực tế: số lượng, bao bì, hạn sử dụng và điều kiện bảo quản.
-3. Nhân viên ghi nhận thông tin nhà cung cấp, mã thuốc, mã lô sản xuất và hạn sử dụng.
-4. Hệ thống tạo phiếu nhập hàng và nhân viên xác nhận hoàn tất (Trách nhiệm của TV3).
-5. Hệ thống lưu phiếu nhập và cộng số lượng tồn vào từng lô thuốc tương ứng (BR09).
+### 3.2. Nghiep vu Tiep nhan va Nhap hang
+1. Nha cung cap giao thuoc den nha thuoc kem hoa don/phieu giao hang.
+2. Nhan vien nhap hang kiem tra thuc te: so luong, bao bi, han su dung va dieu kien bao quan.
+3. Nhan vien ghi nhan thong tin nha cung cap, ma thuoc, ma lo san xuat va han su dung.
+4. He thong tao phieu nhap hang va nhan vien xac nhan hoan tat (Trach nhiem cua TV3).
+5. He thong luu phieu nhap va cong so luong ton vao tung lo thuoc tuong ung (BR09).
 
-### 3.3. Nghiệp vụ Quản lý thông tin thuốc và Lô thuốc
-1. Quản lý hoặc nhân viên cập nhật thông tin danh mục thuốc (tên, quy cách, đơn vị tính, giá bán, trạng thái kinh doanh).
-2. Khi nhập hàng, hệ thống liên kết thuốc với các lô hàng khác nhau.
-3. Hệ thống tổng hợp tồn kho từ các lô còn hạn sử dụng.
-4. Người dùng tra cứu thông tin hạn sử dụng, hệ thống đưa ra cảnh báo các lô sắp hết hạn (Trách nhiệm của TV4).
+### 3.3. Nghiep vu Quan ly thong tin thuoc va Lo thuoc
+1. Quan ly hoac nhan vien cap nhat thong tin danh muc thuoc (ten, quy cach, don vi tinh, gia ban, trang thai kinh doanh).
+2. Khi nhap hang, he thong lien ket thuoc voi cac lo hang khac nhau.
+3. He thong tong hop ton kho tu cac lo con han su dung.
+4. Nguoi dung tra cuu thong tin han su dung, he thong dua ra canh bao cac lo sap het han (Trach nhiem cua TV4).
 
 ---
 
-## 4. Danh Sách Use Case & Phân Công 4 Thành Viên
+## 4. Danh Sach Use Case & Phan Cong 4 Thanh Vien
 
-Để đảm bảo tính chuyên sâu và đáp ứng đúng tiêu chí đánh giá đồ án môn học, nhóm phân chia **4 Use Case chính xuyên suốt** cho 4 thành viên. Mỗi thành viên hoàn thành đầy đủ **5 hạng mục bắt buộc** trong mẫu báo cáo PTIT:
-1. **Đặc tả Use Case chi tiết** (Mục tiêu, Actor, Pre/Post-conditions, Main flow, Alternative & Exception flows).
-2. **Biểu đồ lớp phân tích & Biểu đồ lớp thiết kế** (Hiện thực hóa các lớp Boundary, Control, Entity hoặc 3-tier).
-3. **Biểu đồ tuần tự phân tích** (Analysis Sequence Diagram).
-4. **Biểu đồ tuần tự thiết kế** (Design Sequence Diagram - đầy đủ phương thức, kiểu trả về).
-5. **Giao diện & Mã nguồn tương ứng** (UI, Service, DAO, Entity, Unit Tests).
+De dam bao tinh chuyen sau va dap ung dung tieu chi danh gia do an mon hoc, nhom phan chia **4 Use Case chinh xuyen suot** cho 4 thanh vien. Moi thanh vien hoan thanh day du **5 hang muc bat buoc** trong mau bao cao PTIT:
+1. **Dac ta Use Case chi tiet** (Muc tieu, Actor, Pre/Post-conditions, Main flow, Alternative & Exception flows).
+2. **Bieu do lop phan tich & Bieu do lop thiet ke** (Hien thuc hoa cac lop Boundary, Control, Entity hoac 3-tier).
+3. **Bieu do tuan tu phan tich** (Analysis Sequence Diagram).
+4. **Bieu do tuan tu thiet ke** (Design Sequence Diagram - day du phuong thuc, kieu tra ve).
+5. **Giao dien & Ma nguon tuong ung** (UI, Service, DAO, Entity, Unit Tests).
 
-### Bảng phân công công việc chi tiết
+### Bang phan cong cong viec chi tiet
 
-| Thành viên | Use Case phụ trách xuyên suốt | Trách nhiệm chính trong đồ án | Công việc bổ sung |
+| Thanh vien | Use Case phu trach xuyen suot | Trach nhiem chinh trong do an | Cong viec bo sung |
 | :---: | :--- | :--- | :--- |
-| **TV1** | **UC01 – Lập hóa đơn bán hàng** | Tiếp nhận yêu cầu mua thuốc, tìm kiếm danh mục, chọn thuốc và lô thuốc, tính tổng tiền, tạo hóa đơn ở trạng thái `CHO_THANH_TOAN`. | **Nhóm trưởng**, tổng hợp nội dung báo cáo, chuẩn hóa biểu đồ tổng thể hệ thống. |
-| **TV2** | **UC02 – Thanh toán hóa đơn** | Xử lý thanh toán đa phương thức (Tiền mặt, QR, Thẻ POS), tính tiền thừa, ghi nhận giao dịch `ThanhToan` (BR05), hoàn tất hóa đơn `DA_THANH_TOAN` (BR04), kích hoạt trừ tồn kho theo lô (BR10), in biên lai bán lẻ. | **Quản lý các trạng thái hóa đơn và thanh toán** (State Machine), xử lý ngoại lệ hủy đơn (`DA_HUY`), kiểm soát tính toàn vẹn giao dịch. |
-| **TV3** | **UC03 – Tiếp nhận và lập phiếu nhập hàng** | Tiếp nhận thuốc từ nhà cung cấp, kiểm tra chất lượng, ghi nhận mã lô và HSD, tạo phiếu nhập `PhieuNhap` và tăng số lượng tồn kho `LoThuoc` (BR09). | **Điều phối mô hình lớp và CSDL**, thiết kế ERD tổng thể, chuẩn hóa cấu trúc dữ liệu chung của cả nhóm. |
-| **TV4** | **UC04 – Theo dõi lô thuốc và hạn sử dụng** | Quản lý danh mục thuốc (`Thuoc`), tra cứu chi tiết từng lô thuốc (`LoThuoc`), tính toán tồn kho khả dụng, lọc và cảnh báo các lô thuốc sắp hết hạn sử dụng. | **Báo cáo thống kê cơ bản** (báo cáo doanh thu, nhập hàng và tồn kho), hỗ trợ kiểm thử tích hợp. |
+| **TV1** | **UC01 - Lap hoa don ban hang** | Tiep nhan yeu cau mua thuoc, tim kiem danh muc, chon thuoc va lo thuoc, tinh tong tien, tao hoa don o trang thai `CHO_THANH_TOAN`. | **Nhom truong**, tong hop noi dung bao cao, chuan hoa bieu do tong the he thong. |
+| **TV2** | **UC02 - Thanh toan hoa don** | Xu ly thanh toan da phuong thuc (Tien mat, QR, The POS), tinh tien thua, ghi nhan giao dich `ThanhToan` (BR05), hoan tat hoa don `DA_THANH_TOAN` (BR04), kich hoat tru ton kho theo lo (BR10), in bien lai ban le. | **Quan ly cac trang thai hoa don va thanh toan** (State Machine), xu ly ngoai le huy don (`DA_HUY`), kiem soat tinh toan ven giao dich. |
+| **TV3** | **UC03 - Tiep nhan va lap phieu nhap hang** | Tiep nhan thuoc tu nha cung cap, kiem tra chat luong, ghi nhan ma lo va HSD, tao phieu nhap `PhieuNhap` va tang so luong ton kho `LoThuoc` (BR09). | **Dieu phoi mo hinh lop va CSDL**, thiet ke ERD tong the, chuan hoa cau truc du lieu chung cua ca nhom. |
+| **TV4** | **UC04 - Theo doi lo thuoc va han su dung** | Quan ly danh muc thuoc (`Thuoc`), tra cuu chi tiet tung lo thuoc (`LoThuoc`), tinh toan ton kho kha dung, loc va canh bao cac lo thuoc sap het han su dung. | **Bao cao thong ke co ban** (bao cao doanh thu, nhap hang va ton kho), ho tro kiem thu tich hop. |
 
 ---
 
-## 5. Quy Tắc Nghiệp Vụ Thống Nhất
+## 5. Quy Tac Nghiep Vu Thong Nhat
 
-Tất cả các thành viên phải tuân thủ nghiêm ngặt 12 quy tắc nghiệp vụ sau để tránh xung đột dữ liệu:
+Tat ca cac thanh vien phai tuan thu nghiem ngat 12 quy tac nghiep vu sau de tranh xung dot du lieu:
 
-| Mã | Tên quy tắc nghiệp vụ | Ý nghĩa và Ràng buộc triển khai |
+| Ma | Ten quy tac nghiep vu | Y nghia va Rang buoc trien khai |
 | :---: | :--- | :--- |
-| **BR01** | Định danh thuốc duy nhất | Mỗi thuốc có một mã thuốc (`MaThuoc`) duy nhất trong hệ thống. |
-| **BR02** | Trạng thái kinh doanh | Chỉ những thuốc có trạng thái `DANG_KINH_DOAN` mới được phép đưa vào hóa đơn bán hàng. |
-| **BR03** | Giới hạn số lượng bán | Số lượng bán không được vượt quá số lượng tồn khả dụng của lô thuốc được chọn. |
-| **BR04** | Hoàn tất hóa đơn | Hóa đơn chỉ được chuyển sang trạng thái hoàn tất (`DA_THANH_TOAN`) khi thanh toán thành công. |
-| **BR05** | Liên kết thanh toán | Mỗi giao dịch thanh toán (`ThanhToan`) phải gắn liền với một hóa đơn cụ thể (`MaHD`). |
-| **BR06** | Định danh phiếu nhập duy nhất| Mỗi phiếu nhập có một mã phiếu nhập (`MaPN`) duy nhất trong toàn hệ thống. |
-| **BR07** | Đa lô hàng cho một thuốc | Một thuốc có thể được nhập nhiều lần với các mã lô (`MaLo`) và hạn sử dụng khác nhau. |
-| **BR08** | Thuộc tính bắt buộc của lô | Mỗi lô thuốc bắt buộc phải có mã lô (`MaLo`), hạn sử dụng (`HanSuDung`) và số lượng nhập. |
-| **BR09** | Tăng tồn kho khi nhập | Số lượng tồn kho của lô thuốc chỉ tăng khi phiếu nhập hàng được xác nhận lưu thành công. |
-| **BR10** | Giảm tồn kho khi thanh toán | Số lượng tồn kho của lô thuốc giảm tương ứng khi hóa đơn được thanh toán thành công. |
-| **BR11** | Cảnh báo hạn sử dụng | Hệ thống phải hỗ trợ lọc và cảnh báo các lô thuốc có hạn sử dụng cận kề (dưới 30-90 ngày). |
-| **BR12** | Tính không âm của dữ liệu | Tuyệt đối không cho phép nhập số lượng âm, đơn giá âm hoặc số tiền thanh toán âm. |
+| **BR01** | Dinh danh thuoc duy nhat | Moi thuoc co mot ma thuoc (`MaThuoc`) duy nhat trong he thong. |
+| **BR02** | Trang thai kinh doanh | Chi nhung thuoc co trang thai `DANG_KINH_DOAN` moi duoc phep dua vao hoa don ban hang. |
+| **BR03** | Gioi han so luong ban | So luong ban khong duoc vuot qua so luong ton kha dung cua lo thuoc duoc chon. |
+| **BR04** | Hoan tat hoa don | Hoa don chi duoc chuyen sang trang thai hoan tat (`DA_THANH_TOAN`) khi thanh toan thanh cong. |
+| **BR05** | Lien ket thanh toan | Moi giao dich thanh toan (`ThanhToan`) phai gan lien voi mot hoa don cu the (`MaHD`). |
+| **BR06** | Dinh danh phieu nhap duy nhat| Moi phieu nhap co mot ma phieu nhap (`MaPN`) duy nhat trong toan he thong. |
+| **BR07** | Da lo hang cho mot thuoc | Mot thuoc co the duoc nhap nhieu lan voi cac ma lo (`MaLo`) va han su dung khac nhau. |
+| **BR08** | Thuoc tinh bat buoc cua lo | Moi lo thuoc bat buoc phai co ma lo (`MaLo`), han su dung (`HanSuDung`) va so luong nhap. |
+| **BR09** | Tang ton kho khi nhap | So luong ton kho cua lo thuoc chi tang khi phieu nhap hang duoc xac nhan luu thanh cong. |
+| **BR10** | Giam ton kho khi thanh toan | So luong ton kho cua lo thuoc giam tuong ung khi hoa don duoc thanh toan thanh cong. |
+| **BR11** | Canh bao han su dung | He thong phai ho tro loc va canh bao cac lo thuoc co han su dung can ke (duoi 30-90 ngay). |
+| **BR12** | Tinh khong am cua du lieu | Tuyet doi khong cho phep nhap so luong am, don gia am hoac so tien thanh toan am. |
 
 ---
 
-## 6. Mô Hình Dữ Liệu Sơ Bộ & Quan Hệ Thực Thể
+## 6. Mo Hinh Du Lieu So Bo & Quan He Thuc The
 
-### 6.1. Danh sách thực thể dữ liệu
+### 6.1. Danh sach thuc the du lieu
 
 ```mermaid
 erDiagram
@@ -242,124 +242,124 @@ erDiagram
     }
 ```
 
-* **Điểm cốt lõi trong thiết kế:** Bảng `ChiTietHoaDon` lưu cả `MaThuoc` và `MaLo`. Nhờ đó, khi xử lý thanh toán (TV2), hệ thống có thể xác định chính xác lô thuốc nào được xuất bán để trừ tồn kho theo lô (BR10), phục vụ cho việc kiểm soát hạn dùng của TV4.
+* **Diem cot loi trong thiet ke:** Bang `ChiTietHoaDon` luu ca `MaThuoc` va `MaLo`. Nho do, khi xu ly thanh toan (TV2), he thong co the xac dinh chinh xac lo thuoc nao duoc xuat ban de tru ton kho theo lo (BR10), phuc vu cho viec kiem soat han dung cua TV4.
 
 ---
 
-## 7. Mô Hình Thuật Toán & Luồng Xử Lý Nghiệp Vụ
+## 7. Mo Hinh Thuat Toan & Luong Xu Ly Nghiep Vu
 
-### 7.1. Thuật toán xử lý UC02 – Thanh toán hóa đơn & Trừ kho (Trọng tâm TV2)
+### 7.1. Thuat toan xu ly UC02 - Thanh toan hoa don & Tru kho (Trong tam TV2)
 
 ```mermaid
 flowchart TD
-    Start(["Bắt đầu UC02"]) --> CheckInvoice{"Hóa đơn tồn tại\n& TrangThai == 'CHO_THANH_TOAN'?"}
-    CheckInvoice -- "Không" --> ErrStatus["Báo lỗi: HĐ không hợp lệ, đã TT hoặc đã hủy"] --> EndFail(["Dừng"])
+    Start(["Bat dau UC02"]) --> CheckInvoice{"Hoa don ton tai\n& TrangThai == 'CHO_THANH_TOAN'?"}
+    CheckInvoice -- "Khong" --> ErrStatus["Bao loi: HD khong hop le, da TT hoac da huy"] --> EndFail(["Dung"])
     
-    CheckInvoice -- "Có" --> ChooseMethod["Thu ngân chọn phương thức: Tiền mặt / QR / Thẻ"]
-    ChooseMethod --> CheckAmount{"Phương thức == TIEN_MAT\n&& Tiền khách đưa < Tổng tiền?"}
+    CheckInvoice -- "Co" --> ChooseMethod["Thu ngan chon phuong thuc: Tien mat / QR / The"]
+    ChooseMethod --> CheckAmount{"Phuong thuc == TIEN_MAT\n&& Tien khach dua < Tong tien?"}
     
-    CheckAmount -- "Đúng (Thiếu tiền)" --> ErrMoney["Báo lỗi: Số tiền khách đưa không đủ"] --> EndFail
+    CheckAmount -- "Dung (Thieu tien)" --> ErrMoney["Bao loi: So tien khach dua khong du"] --> EndFail
     
-    CheckAmount -- "Sai (Đủ tiền hoặc QR/Thẻ)" --> CheckStock{"Kiểm tra tồn kho:\nSoLuongTon(lô) >= SoLuong(bán)\ncho tất cả các dòng thuốc?"}
+    CheckAmount -- "Sai (Du tien hoac QR/The)" --> CheckStock{"Kiem tra ton kho:\nSoLuongTon(lo) >= SoLuong(ban)\ncho tat ca cac dong thuoc?"}
     
-    CheckStock -- "Không đủ hàng" --> ErrStock["Báo lỗi tồn kho: Thuốc trong lô không đủ bán"] --> EndFail
+    CheckStock -- "Khong du hang" --> ErrStock["Bao loi ton kho: Thuoc trong lo khong du ban"] --> EndFail
     
-    CheckStock -- "Đủ hàng" --> BeginTx["Bắt đầu Giao dịch Cập nhật"]
-    BeginTx --> Step1["1. Tạo bản ghi ThanhToan mới (BR05)\nTrangThai = 'THANH_CONG'"]
-    Step1 --> Step2["2. Cập nhật HoaDon.TrangThai = 'DA_THANH_TOAN' (BR04)"]
-    Step2 --> Step3["3. Duyệt từng dòng thuốc trong đơn:\nGiảm LoThuoc.SoLuongTon theo lô (BR10)"]
-    Step3 --> Step4["4. Tính tiền thừa trả khách (nếu có)"]
-    Step4 --> CommitTx["Hoàn tất giao dịch"]
-    CommitTx --> ShowReceipt["Hiển thị thông báo & In biên lai Long Châu"]
-    ShowReceipt --> EndSuccess(["Kết thúc thành công"])
+    CheckStock -- "Du hang" --> BeginTx["Bat dau Giao dich Cap nhat"]
+    BeginTx --> Step1["1. Tao ban ghi ThanhToan moi (BR05)\nTrangThai = 'THANH_CONG'"]
+    Step1 --> Step2["2. Cap nhat HoaDon.TrangThai = 'DA_THANH_TOAN' (BR04)"]
+    Step2 --> Step3["3. Duyet tung dong thuoc trong don:\nGiam LoThuoc.SoLuongTon theo lo (BR10)"]
+    Step3 --> Step4["4. Tinh tien thua tra khach (neu co)"]
+    Step4 --> CommitTx["Hoan tat giao dich"]
+    CommitTx --> ShowReceipt["Hien thi thong bao & In bien lai Long Chau"]
+    ShowReceipt --> EndSuccess(["Ket thuc thanh cong"])
 ```
 
-### 7.2. Biểu đồ máy trạng thái (State Machine Diagram) do TV2 quản lý
+### 7.2. Bieu do may trang thai (State Machine Diagram) do TV2 quan ly
 
 ```mermaid
 stateDiagram-v2
-    [*] --> CHO_THANH_TOAN: TV1 tạo hóa đơn mới
+    [*] --> CHO_THANH_TOAN: TV1 tao hoa don moi
     
-    CHO_THANH_TOAN --> DA_THANH_TOAN: TV2 xác nhận thanh toán thành công\n[Tạo ThanhToan & Trừ tồn kho lô]
-    CHO_THANH_TOAN --> DA_HUY: TV2 hủy đơn do khách đổi ý/không mua\n[Không trừ kho]
+    CHO_THANH_TOAN --> DA_THANH_TOAN: TV2 xac nhan thanh toan thanh cong\n[Tao ThanhToan & Tru ton kho lo]
+    CHO_THANH_TOAN --> DA_HUY: TV2 huy don do khach doi y/khong mua\n[Khong tru kho]
     
-    DA_THANH_TOAN --> [*]: Hoàn tất và lưu trữ chứng từ
-    DA_HUY --> [*]: Đóng hóa đơn
+    DA_THANH_TOAN --> [*]: Hoan tat va luu tru chung tu
+    DA_HUY --> [*]: Dong hoa don
 ```
 
 ---
 
-## 8. Kiến Trúc Kỹ Thuật & Cấu Trúc Mã Nguồn Java
+## 8. Kien Truc Ky Thuat & Cau Truc Ma Nguon Java
 
-Phần mềm được hiện thực hóa **100% bằng Java** theo mô hình chuẩn **3-Layer Architecture (Presentation - Business Logic - Data Access)**, không phụ thuộc vào bất kỳ thư viện bên ngoài nào, sẵn sàng chạy trên mọi phiên bản Java (JDK 8 đến JDK 25+).
+Phan mem duoc hien thuc hoa **100% bang Java** theo mo hinh chuan **3-Layer Architecture (Presentation - Business Logic - Data Access)**, khong phu thuoc vao bat ky thu vien ben ngoai nao, san sang chay tren moi phien ban Java (JDK 8 den JDK 25+).
 
 ```
 c:\Users\kn200\HTTT\
-├── run.bat                          # File 1-click biên dịch và chạy giao diện Java Swing
-├── test.bat                         # File 1-click chạy kiểm thử tự động 6 bài test BR04, BR05, BR10
-├── README.md                        # Tài liệu đặc tả tổng thể đồ án
-├── docs/
-│   └── BAO_CAO_TV2_UC02.md          # Báo cáo chi tiết 5 phần cho TV2 chuẩn PTIT
-└── src/main/java/com/longchau/
-    ├── model/                       # TẦNG THỰC THỂ (Entity & Enums)
-    │   ├── TrangThaiHoaDon.java     # Enum: CHO_THANH_TOAN, DA_THANH_TOAN, DA_HUY
-    │   ├── TrangThaiThanhToan.java  # Enum: DANG_XU_LY, THANH_CONG, THAT_BAI
-    │   ├── PhuongThucThanhToan.java # Enum: TIEN_MAT, CHUYEN_KHOAN, THE
-    │   ├── NhanVien.java            # Thông tin nhân viên, vai trò thu ngân
-    │   ├── Thuoc.java               # Thông tin thuốc, quy cách, đơn giá bán
-    │   ├── LoThuoc.java             # Mã lô, HSD và số lượng tồn kho theo lô
-    │   ├── ChiTietHoaDon.java       # Chi tiết đơn hàng gắn với Thuốc & Mã lô
-    │   ├── ThanhToan.java           # Bản ghi giao dịch thanh toán (BR05)
-    │   └── HoaDon.java              # Đối tượng Hóa đơn bán hàng
-    ├── dao/                         # TẦNG TRUY XUẤT DỮ LIỆU (Data Access Object)
-    │   ├── Database.java            # Mock DB mô phỏng CSDL quan hệ với Seed Data Long Châu
-    │   ├── HoaDonDAO.java           # Tìm kiếm, lọc và cập nhật trạng thái hóa đơn
-    │   ├── ThanhToanDAO.java        # Lưu bản ghi giao dịch thanh toán
-    │   └── LoThuocDAO.java          # Kiểm tra và trừ tồn kho theo lô (BR10)
-    ├── service/                     # TẦNG NGHIỆP VỤ (Business Logic Layer - TV2)
-    │   ├── PaymentException.java    # Bắt và đóng gói các ngoại lệ thanh toán
-    │   ├── PaymentRequest.java      # DTO truyền thông tin từ View xuống Service
-    │   ├── PaymentResult.java       # DTO trả về kết quả thanh toán & tiền thừa
-    │   └── PaymentService.java      # Cốt lõi xử lý thanh toán, trừ kho, hủy đơn
-    ├── view/                        # TẦNG GIAO DIỆN NGƯỜI DÙNG (Java Swing)
-    │   ├── PaymentManagementFrame.java # Màn hình thu ngân chuyên nghiệp Long Châu
-    │   └── ReceiptDialog.java       # Hộp thoại in biên lai bán lẻ cho khách
-    ├── Main.java                    # Điểm vào chương trình (Main Entry)
-    └── TestPaymentRunner.java       # Kiểm thử tự động 6 ca kiểm thử nghiệp vụ
+|-- run.bat                          # File 1-click bien dich va chay giao dien Java Swing
+|-- test.bat                         # File 1-click chay kiem thu tu dong 6 bai test BR04, BR05, BR10
+|-- README.md                        # Tai lieu dac ta tong the do an
+|-- docs/
+|   |-- BAO_CAO_TV2_UC02.md          # Bao cao chi tiet 5 phan cho TV2 chuan PTIT
+|-- src/main/java/com/longchau/
+    |-- model/                       # TANG THUC THE (Entity & Enums)
+    |   |-- TrangThaiHoaDon.java     # Enum: CHO_THANH_TOAN, DA_THANH_TOAN, DA_HUY
+    |   |-- TrangThaiThanhToan.java  # Enum: DANG_XU_LY, THANH_CONG, THAT_BAI
+    |   |-- PhuongThucThanhToan.java # Enum: TIEN_MAT, CHUYEN_KHOAN, THE
+    |   |-- NhanVien.java            # Thong tin nhan vien, vai tro thu ngan
+    |   |-- Thuoc.java               # Thong tin thuoc, quy cach, don gia ban
+    |   |-- LoThuoc.java             # Ma lo, HSD va so luong ton kho theo lo
+    |   |-- ChiTietHoaDon.java       # Chi tiet don hang gan voi Thuoc & Ma lo
+    |   |-- ThanhToan.java           # Ban ghi giao dich thanh toan (BR05)
+    |   |-- HoaDon.java              # Doi tuong Hoa don ban hang
+    |-- dao/                         # TANG TRUY XUAT DU LIEU (Data Access Object)
+    |   |-- Database.java            # Mock DB mo phong CSDL quan he voi Seed Data Long Chau
+    |   |-- HoaDonDAO.java           # Tim kiem, loc va cap nhat trang thai hoa don
+    |   |-- ThanhToanDAO.java        # Luu ban ghi giao dich thanh toan
+    |   |-- LoThuocDAO.java          # Kiem tra va tru ton kho theo lo (BR10)
+    |-- service/                     # TANG NGHIEP VU (Business Logic Layer - TV2)
+    |   |-- PaymentException.java    # Bat va dong goi cac ngoai le thanh toan
+    |   |-- PaymentRequest.java      # DTO truyen thong tin tu View xuong Service
+    |   |-- PaymentResult.java       # DTO tra ve ket qua thanh toan & tien thua
+    |   |-- PaymentService.java      # Cot loi xu ly thanh toan, tru kho, huy don
+    |-- view/                        # TANG GIAO DIEN NGUOI DUNG (Java Swing)
+    |   |-- PaymentManagementFrame.java # Man hinh thu ngan chuyen nghiep Long Chau
+    |   |-- ReceiptDialog.java       # Hop thoai in bien lai ban le cho khach
+    |-- Main.java                    # Diem vao chuong trinh (Main Entry)
+    |-- TestPaymentRunner.java       # Kiem thu tu dong 6 ca kiem thu nghiep vu
 ```
 
 ---
 
-## 9. Hướng Dẫn Biên Dịch & Chạy Chương Trình
+## 9. Huong Dan Bien Dich & Chay Chuong Trinh
 
-### 9.1. Khởi chạy giao diện nhanh (Khuyên dùng)
-* **Chạy giao diện phần mềm:** Nhấp đúp chuột vào file `run.bat` (hoặc mở PowerShell gõ `.\run.bat`).
-* **Chạy kiểm thử tự động:** Nhấp đúp chuột vào file `test.bat` (hoặc mở PowerShell gõ `.\test.bat`).
+### 9.1. Khoi chay giao dien nhanh (Khuyen dung)
+- **Chay giao dien phan mem:** Nhap dup chuot vao file `run.bat` (hoac mo PowerShell go `.\run.bat`).
+- **Chay kiem thu tu dong:** Nhap dup chuot vao file `test.bat` (hoac mo PowerShell go `.\test.bat`).
 
-### 9.2. Biên dịch và thực thi thủ công bằng Terminal
+### 9.2. Bien dich va thuc thi thu cong bang Terminal
 ```powershell
-# 1. Biên dịch toàn bộ mã nguồn Java vào thư mục bin:
+# 1. Bien dich toan bo ma nguon Java vao thu muc bin:
 & "$env:USERPROFILE\.jdks\openjdk-25.0.1\bin\javac.exe" -encoding UTF-8 -d bin (Get-ChildItem -Recurse -Filter *.java src).FullName
 
-# 2. Khởi chạy giao diện đồ họa Java Swing:
+# 2. Khoi chay giao dien do hoa Java Swing:
 & "$env:USERPROFILE\.jdks\openjdk-25.0.1\bin\java.exe" "-Dfile.encoding=UTF-8" -cp bin com.longchau.Main
 
-# 3. Khởi chạy bộ kiểm thử tự động dòng lệnh:
+# 3. Khoi chay bo kiem thu tu dong dong lenh:
 & "$env:USERPROFILE\.jdks\openjdk-25.0.1\bin\java.exe" "-Dfile.encoding=UTF-8" -cp bin com.longchau.TestPaymentRunner
 ```
 
-### 9.3. Kết quả kiểm thử tự động đạt 100% (6/6 Test Cases)
+### 9.3. Ket qua kiem thu tu dong dat 100% (6/6 Test Cases)
 ```
 ===============================================================
- KIỂM THỬ TỰ ĐỘNG CÁC QUY TẮC NGHIỆP VỤ CỦA THÀNH VIÊN 2 (JAVA)
+ KIEM THU TU DONG CAC QUY TAC NGHIEP VU CUA THANH VIEN 2 (JAVA)
 ===============================================================
-[PASS] Test 1: Lấy thông tin hóa đơn chờ thanh toán HD261115-001 thành công.
-[PASS] Test 2: Thanh toán thành công! BR04 (Đã thanh toán), BR05 (Gắn mã TT), BR10 (Trừ kho từ 150 xuống 149) đều chuẩn xác!
-[PASS] Test 3: Bắt chính xác ngoại lệ khi tiền khách đưa không đủ.
-[PASS] Test 4: Bắt chính xác ngoại lệ khi cố thanh toán hóa đơn đã hoàn tất.
-[PASS] Test 5: Hủy hóa đơn chờ thanh toán thành công (Trạng thái chuyển sang DA_HUY).
-[PASS] Test 6: Bắt chính xác lỗi không thể hủy hóa đơn đã thanh toán hoàn tất.
+[PASS] Test 1: Lay thong tin hoa don cho thanh toan HD261115-001 thanh cong.
+[PASS] Test 2: Thanh toan thanh cong! BR04 (Da thanh toan), BR05 (Gan ma TT), BR10 (Tru kho tu 150 xuong 149) deu chuan xac!
+[PASS] Test 3: Bat chinh xac ngoai le khi tien khach dua khong du.
+[PASS] Test 4: Bat chinh xac ngoai le khi co thanh toan hoa don da hoan tat.
+[PASS] Test 5: Huy hoa don cho thanh toan thanh cong (Trang thai chuyen sang DA_HUY).
+[PASS] Test 6: Bat chinh xac loi khong the huy hoa don da thanh toan hoan tat.
 ===============================================================
- KẾT QUẢ KIỂM THỬ: 6 PASSED / 6 TOTAL
+ KET QUA KIEM THU: 6 PASSED / 6 TOTAL
 ===============================================================
 ```
