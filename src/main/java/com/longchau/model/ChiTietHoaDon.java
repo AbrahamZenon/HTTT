@@ -58,3 +58,4 @@ public class ChiTietHoaDon {
     public String getHanSuDung() { return hanSuDung; }
     public void setHanSuDung(String hanSuDung) { this.hanSuDung = hanSuDung; }
 }
+

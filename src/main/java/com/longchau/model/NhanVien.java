@@ -30,3 +30,4 @@ public class NhanVien {
     public String getTenDangNhap() { return tenDangNhap; }
     public void setTenDangNhap(String tenDangNhap) { this.tenDangNhap = tenDangNhap; }
 }
+

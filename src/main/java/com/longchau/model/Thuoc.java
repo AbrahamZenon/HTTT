@@ -35,3 +35,4 @@ public class Thuoc {
     public String getTrangThai() { return trangThai; }
     public void setTrangThai(String trangThai) { this.trangThai = trangThai; }
 }
+

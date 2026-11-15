@@ -75,3 +75,4 @@ c:\Users\kn200\HTTT\
 # 3. Chạy kiểm thử tự động
 & "$env:USERPROFILE\.jdks\openjdk-25.0.1\bin\java.exe" "-Dfile.encoding=UTF-8" -cp bin com.longchau.TestPaymentRunner
 ```
+

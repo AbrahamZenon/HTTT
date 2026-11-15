@@ -51,3 +51,4 @@ public class HoaDon {
     public ThanhToan getThanhToan() { return thanhToan; }
     public void setThanhToan(ThanhToan thanhToan) { this.thanhToan = thanhToan; }
 }
+

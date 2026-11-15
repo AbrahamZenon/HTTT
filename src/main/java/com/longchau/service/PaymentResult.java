@@ -38,3 +38,4 @@ public class PaymentResult {
     public TrangThaiHoaDon getTrangThaiHoaDon() { return trangThaiHoaDon; }
     public void setTrangThaiHoaDon(TrangThaiHoaDon trangThaiHoaDon) { this.trangThaiHoaDon = trangThaiHoaDon; }
 }
+

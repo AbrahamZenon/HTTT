@@ -20,3 +20,4 @@ del sources.txt
 
 "%JAVA_CMD%" "-Dfile.encoding=UTF-8" -cp bin com.longchau.TestPaymentRunner
 pause
+

@@ -29,3 +29,4 @@ if %ERRORLEVEL% NEQ 0 (
 echo [2/2] Đang khởi chạy giao diện Java Swing...
 start "" "%JAVA_CMD%" "-Dfile.encoding=UTF-8" -cp bin com.longchau.Main
 echo [XONG] Giao diện đã được khởi động!
+

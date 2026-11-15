@@ -40,3 +40,4 @@ public class PaymentRequest {
     public String getMaGiaoDichRef() { return maGiaoDichRef; }
     public void setMaGiaoDichRef(String maGiaoDichRef) { this.maGiaoDichRef = maGiaoDichRef; }
 }
+

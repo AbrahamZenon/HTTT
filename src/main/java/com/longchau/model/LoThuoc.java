@@ -30,3 +30,4 @@ public class LoThuoc {
     public int getSoLuongTon() { return soLuongTon; }
     public void setSoLuongTon(int soLuongTon) { this.soLuongTon = soLuongTon; }
 }
+

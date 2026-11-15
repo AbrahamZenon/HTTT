@@ -70,3 +70,4 @@ c:\Users\kn200\HTTT\
 ## 4. Hướng dẫn chạy chương trình
 1. Nhấp đúp chuột vào file `run.bat` để chạy giao diện Java Swing.
 2. Nhấp đúp chuột vào file `test.bat` để chạy bộ kiểm thử tự động 6/6 test cases.
+

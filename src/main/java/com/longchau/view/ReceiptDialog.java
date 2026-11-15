@@ -123,3 +123,4 @@ public class ReceiptDialog extends JDialog {
         add(bottomPanel, BorderLayout.SOUTH);
     }
 }
+

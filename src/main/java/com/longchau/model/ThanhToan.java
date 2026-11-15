@@ -51,3 +51,4 @@ public class ThanhToan {
     public String getGhiChu() { return ghiChu; }
     public void setGhiChu(String ghiChu) { this.ghiChu = ghiChu; }
 }
+

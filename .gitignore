@@ -1,5 +1,6 @@
 bin/
 *.class
-__pycache__/
-*.pyc
-*.db
+.idea/
+*.iml
+.vscode/
+sources.txt
