@@ -289,6 +289,17 @@ stateDiagram-v2
 
 ---
 
+### Chạy thử UC03 – Tiếp nhận và lập phiếu nhập hàng
+
+1. Chạy `run.bat` và chọn **Kho hàng → UC03 - Nhập hàng**.
+2. Nhập mã phiếu `PN001`, chọn nhà cung cấp `NCC01` và nhân viên `NV03`. Nhập số chứng từ nếu có.
+3. Chọn thuốc `TH01`, nhập mã lô `LO2026A`, hạn dùng `2027-12-31`, số lượng đạt `10` và đơn giá `150000`. Bấm **Thêm lô đạt kiểm tra**. Có thể thêm nhiều lô hoặc bỏ dòng đã chọn.
+4. Sau khi đối chiếu với chứng từ, bấm **Xác nhận nhập kho**. Tồn lô mẫu `LO2026A#TH01` tăng từ 150 lên 160 nếu chưa có giao dịch khác. Mở thẻ **Lịch sử phiếu nhập** và chọn `PN001` để xem chi tiết.
+
+`PhieuNhap` lưu mã nhà cung cấp, mã nhân viên, ngày nhập và chi tiết. Mỗi `ChiTietPhieuNhap` xác định lô theo cặp mã lô và mã thuốc, cùng cấu trúc khóa mà UC02 dùng để trừ tồn. `NhapHangService` kiểm tra toàn bộ phiếu trước khi cập nhật tồn và lưu phiếu. Mã phiếu trùng, lô hết hạn hoặc hạn dùng không khớp với lô đang có sẽ làm cả phiếu bị từ chối.
+
+UC03 dùng danh mục thuốc, nhân viên và nhà cung cấp mẫu. Việc kiểm tra chất lượng và đối chiếu chứng từ do nhân viên thực hiện. Kho dữ liệu Java hiện chạy trong bộ nhớ, nên phiếu và tồn cập nhật được lưu trong phiên chạy. Thoát ứng dụng hoặc chọn **Khôi Phục Data Mẫu** sẽ nạp lại dữ liệu mẫu.
+
 ## 8. Kien Truc Ky Thuat & Cau Truc Ma Nguon Java
 
 Phan mem duoc hien thuc hoa **100% bang Java** theo mo hinh chuan **3-Layer Architecture (Presentation - Business Logic - Data Access)**, khong phu thuoc vao bat ky thu vien ben ngoai nao, san sang chay tren moi phien ban Java (JDK 8 den JDK 25+).

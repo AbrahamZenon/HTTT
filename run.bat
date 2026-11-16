@@ -2,7 +2,7 @@
 chcp 65001 >nul
 echo ===============================================================
 echo  HỆ THỐNG QUẢN LÝ BÁN HÀNG VÀ TỒN KHO NHÀ THUỐC LONG CHÂU
-echo  Phân hệ TV2: UC02 - Thanh toán hóa đơn ^& Quản lý trạng thái
+echo  UC02 - Thanh toán hóa đơn ^| UC03 - Tiếp nhận và lập phiếu nhập hàng
 echo ===============================================================
 
 set "JAVA_CMD=java"

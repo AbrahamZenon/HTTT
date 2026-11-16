@@ -74,6 +74,14 @@ public class PaymentManagementFrame extends JFrame {
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
+        JMenuBar menu = new JMenuBar();
+        JMenu kho = new JMenu("Kho hàng");
+        JMenuItem nhapHang = new JMenuItem("UC03 - Nhập hàng");
+        nhapHang.addActionListener(event -> new NhapHangDialog(this).setVisible(true));
+        kho.add(nhapHang);
+        menu.add(kho);
+        setJMenuBar(menu);
+
         initComponents();
         loadKPIs();
         loadInvoiceList();

@@ -1,5 +1,6 @@
 package com.longchau.service;
 
+import com.longchau.dao.Database;
 import com.longchau.dao.HoaDonDAO;
 import com.longchau.dao.LoThuocDAO;
 import com.longchau.dao.ThanhToanDAO;
@@ -40,7 +41,13 @@ public class PaymentService {
      * Hiện thực hóa UC02 - Thanh toán hóa đơn:
      * Đồng bộ hóa, kiểm tra trạng thái và cập nhật trừ kho theo lô (BR10)
      */
-    public synchronized PaymentResult processPayment(PaymentRequest req) throws PaymentException {
+    public PaymentResult processPayment(PaymentRequest req) throws PaymentException {
+        synchronized (Database.getInstance()) {
+            return processPaymentLocked(req);
+        }
+    }
+
+    private PaymentResult processPaymentLocked(PaymentRequest req) throws PaymentException {
         if (req == null || req.getMaHD() == null || req.getMaHD().trim().isEmpty()) {
             throw new PaymentException("Mã hóa đơn không được để trống!");
         }
@@ -142,7 +149,13 @@ public class PaymentService {
      * Hủy hóa đơn (Quản lý trạng thái hóa đơn của TV2):
      * Chỉ cho phép hủy hóa đơn đang ở trạng thái CHO_THANH_TOAN.
      */
-    public synchronized void cancelInvoice(String maHD, String reason) throws PaymentException {
+    public void cancelInvoice(String maHD, String reason) throws PaymentException {
+        synchronized (Database.getInstance()) {
+            cancelInvoiceLocked(maHD, reason);
+        }
+    }
+
+    private void cancelInvoiceLocked(String maHD, String reason) throws PaymentException {
         if (maHD == null || maHD.trim().isEmpty()) {
             throw new PaymentException("Mã hóa đơn không hợp lệ!");
         }

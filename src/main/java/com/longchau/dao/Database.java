@@ -17,6 +17,8 @@ public class Database {
     public final Map<String, LoThuoc> loThuocs = new ConcurrentHashMap<>();
     public final Map<String, HoaDon> hoaDons = new ConcurrentHashMap<>();
     public final Map<String, ThanhToan> thanhToans = new ConcurrentHashMap<>();
+    public final Map<String, NhaCungCap> nhaCungCaps = new ConcurrentHashMap<>();
+    public final Map<String, PhieuNhap> phieuNhaps = new ConcurrentHashMap<>();
 
     private Database() {
         initSampleData();
@@ -35,10 +37,15 @@ public class Database {
         loThuocs.clear();
         hoaDons.clear();
         thanhToans.clear();
+        nhaCungCaps.clear();
+        phieuNhaps.clear();
         initSampleData();
     }
 
     private void initSampleData() {
+        nhaCungCaps.put("NCC01", new NhaCungCap("NCC01", "Nhà cung cấp mẫu 1"));
+        nhaCungCaps.put("NCC02", new NhaCungCap("NCC02", "Nhà cung cấp mẫu 2"));
+
         // 1. Nhân viên
         nhanViens.put("NV01", new NhanVien("NV01", "Nguyễn Văn An", "BAN_HANG", "an.nv"));
         nhanViens.put("NV02", new NhanVien("NV02", "Trần Thị Bình", "BAN_HANG", "binh.tt"));
